@@ -1,32 +1,38 @@
-import config from "./../config/config";
-import app from "./express";
-import mongoose from "mongoose";
+const express= require("express");
+const cookieParser = require("cookie-parser");
+const compress = require("compression");
+const cors = require("cors");
+const helmet = require("helmet");
+const mongoose= require('mongoose');
+require('dotenv/config')
 
-// Connection URL
-mongoose.Promise = global.Promise;
-mongoose.connect(config.mongoUri, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true,
-});
-mongoose.connection.on("error", () => {
-  throw new Error(`unable to connect to database: ${config.mongoUri}`);
+//Initialize App, enale cors, define our app to "reformat" the response to json
+const app = express();
+app.use(cors());
+app.use(cookieParser());
+app.use(compress());
+app.use(helmet());
+app.use(express.urlencoded({ extended: true}));
+
+app.use(express.json());
+
+//Import Routes
+const usersRoute = require('./routes/users');
+const orderRoute = require('./routes/orders');
+const productRoute = require('./routes/product');
+const filesRoute = require('./routes/file');
+app.use('/api', usersRoute)
+app.use('/api', orderRoute)
+app.use('/api', productRoute)
+app.use('/api', filesRoute)
+//Routes
+app.get('/', (req, res)=>{
+    res.send('hello');
 });
 
-app.listen(config.port, (err) => {
-  if (err) {
-    console.log(err);
-  }
-  console.info("Server started on port %s.", config.port);
-});
-
-/*First, we import the config variables to set the port number
- that the server will listen on and then import the configured Express app
-  to start the server.
-   To get this code running and continue development,
-    we can run yarn development from the command line.
-     If the code has no errors, the server should
-      start running with Nodemon monitoring for code changes.
-       Next, we will update this server code to integrate the database
-     connection.
-*/
+//Connect to mongodb
+mongoose.connect(process.env.DBACCESS, ()=>
+    console.log('connected')
+)
+//Listen to server
+app.listen(3000);

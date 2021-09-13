@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import crypto from "crypto";
+const mongoose = require("mongoose");
+const crypto =require("crypto");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -57,7 +57,7 @@ userSchema
 //The password string that's provided by the user is not stored directly in the user document.
 // Instead, it is handled as a virtual field.
 
-UserSchema.methods = {
+userSchema.methods = {
   // authenticate : This method is called to verify sign-in attempts by matching the
   // user-provided password text with the hashed_password stored
   // in the database for a specific user.
@@ -93,7 +93,7 @@ UserSchema.methods = {
 // using the authenticate method. We should also ensure the user selects a strong password
 // string to begin with, which can done by adding custom validation to the passport field.
 
-UserSchema.path("hashed_password").validate((v) => {
+userSchema.path("hashed_password").validate((v) => {
   if (this._password && this._password.length < 6) {
     this.invalidate("password", "Password must be at least 6 characters.");
   }

@@ -2,17 +2,23 @@
   "name": "alpha",
   "version": "1.0.0",
   "description": "alpha mongodb backend",
-  "main": "index.js",
+  "main": "./server/server.js",
   "license": "MIT",
   "dependencies": {
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
+    "csvtojson": "^2.0.10",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "helmet": "^4.6.0",
     "mongodb": "^4.1.1",
-    "mongoose": "^6.0.2"
+    "mongoose": "^6.0.2",
+    "multer": "^1.4.3",
+    "path": "^0.12.7"
   },
   "scripts": {
-   "development": "nodemon" 
+    "development": "nodemon"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
